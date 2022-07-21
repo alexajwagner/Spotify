@@ -87,23 +87,23 @@ fourth <- doctor[-c(1:300), ]
 #getting feats for all groups
 #now I am getting the features for each group
 firstfeats <- get_track_audio_features(first$track.trackUri, get_spotify_access_token(
-  client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
-  client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
+  client_id = "insert your client id",
+  client_secret = "insert your client secret"))
 view(firstfeats)
 
 secondfeats <- get_track_audio_features(second$track.trackUri, get_spotify_access_token(
-  client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
-  client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
+  client_id = "insert your client id",
+  client_secret = "insert your client secret"))
 view(secondfeats)
 
 thirdfeats <- get_track_audio_features(third$track.trackUri, get_spotify_access_token(
-  client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
-  client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
+  client_id = "insert your client id",
+  client_secret = "insert your client secret"))
 view(thirdfeats)
 
 fourthfeats <- get_track_audio_features(fourth$track.trackUri, get_spotify_access_token(
-  client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
-  client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
+  client_id = "insert your client id",
+  client_secret = "insert your client secret"))
 view(fourthfeats)
 
 
@@ -140,8 +140,8 @@ plot(ffinal$dates, ffinal$tempo)
 
 #this has lots of info
 doctorstats <-get_playlist_audio_features("lexijewell", "4oS46HAvvek3W6FtOAjeRw", get_spotify_access_token(
-  client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
-  client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
+  client_id = "insert your client id",
+  client_secret = "insert your client secret"))
 view(doctorstats)                 
 
 ###plots from doctorstats###
