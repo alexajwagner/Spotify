@@ -53,6 +53,7 @@ view(doctor)
 searches <- fromJSON("SearchQueries.json", flatten = TRUE)
 
 #track information :)
+#get id number from track.trackuri column in your playlist data frame
 trackinfo <- get_track("6UryEVkqPDLliZOG4UmFi9", market = NULL, get_spotify_access_token(
   client_id = "insert your client id",
   client_secret = "insert your client secret"))
