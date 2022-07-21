@@ -10,9 +10,10 @@ library(knitr)
 library(ggplot2)
 library(plotly)
 
+#this will be specific to you (Session-> set working directory-> choose directory)
 setwd("~/spotify stuffs/MyData 1-4-22")
 
-# pulling all files
+# pull all files from your downloaded data
 streamHistory <- fromJSON("StreamingHistory0.json", flatten = TRUE)   
 streamHistory1 <- fromJSON("StreamingHistory1.json", flatten = TRUE)   
 streamHistory2 <- fromJSON("StreamingHistory2.json", flatten = TRUE) 
@@ -20,51 +21,57 @@ streamHistory3 <- fromJSON("StreamingHistory3.json", flatten = TRUE)
 streamHistory4 <- fromJSON("StreamingHistory4.json", flatten = TRUE)
 streamHistory5 <- fromJSON("StreamingHistory5.json", flatten = TRUE)
 
-#combing files into one dataframe
+#combining files into one dataframe
 total <- rbind(streamHistory,
                streamHistory1,
                streamHistory2,
                streamHistory3,
                streamHistory4,
                streamHistory5)
-#removing non-2021 songs
+view(total)
+
+#removing non-2021 songs NOT ENTIRELY NECESSARY
+#this allows you to remove rows 55510-56040, replace numbers from your "total"
 total <- total[-c(55510:56040), ]  
 view(total)
 
 access_token <- get_spotify_access_token(
-  client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
-  client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731")
+  client_id = "Insert your client id here",
+  client_secret = "insert your client secret here")
 
 
 #pulling playlists
 playlist <- fromJSON("Playlist1.json", flatten = TRUE)  
 view(playlist)
 
+#gettting a specific playlist
+#you can name this whatever, make sure to change it in other lines of code
 doctor <- ((playlist[["playlists"]])[[3]][[9]])
 view(doctor)
 
-#searches
+#searches (just for fun)
 searches <- fromJSON("SearchQueries.json", flatten = TRUE)
 
-#woooo this get me track information :)
+#track information :)
 trackinfo <- get_track("6UryEVkqPDLliZOG4UmFi9", market = NULL, get_spotify_access_token(
-  client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
-  client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
+  client_id = "insert your client id",
+  client_secret = "insert your client secret"))
 view(trackinfo)
 
 get_track_audio_analysis("6UryEVkqPDLliZOG4UmFi9", get_spotify_access_token(
-  client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
-  client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
+  client_id = "insert your client id",
+  client_secret = "insert your client secret"))
 
 get_track_audio_features("6UryEVkqPDLliZOG4UmFi9", get_spotify_access_token(
-  client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
-  client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
+  client_id = "insert your client id",
+  client_secret = "insert your client secret"))
 
 #this removes the spotify:track: text in front of ID so R can read it 
 doctor$track.trackUri<-gsub("spotify:track:","",as.character(doctor$track.trackUri))
 view(doctor)
 
-#gettrackfeats only lets me use 100 ids at a time 
+#gettrackfeats only lets me use 100 ids at a time so we have to do it in chunks
+#here i am breaking my 365 song playlist into 4 dataframes
 first <- doctor[-c(101:365), ]
 view(first)
 
@@ -77,6 +84,7 @@ view(third)
 fourth <- doctor[-c(1:300), ]
 
 #getting feats for all groups
+#now I am getting the features for each group
 firstfeats <- get_track_audio_features(first$track.trackUri, get_spotify_access_token(
   client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
   client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
@@ -117,7 +125,7 @@ dates <- seq(as.Date("2021-01-01"), as.Date("2021-12-31"), by="days")
 ffinal <- cbind(final, dates)
 view(ffinal)
 
-#plots
+#basic plots
 plot(ffinal$dates, ffinal$energy)
 plot(ffinal$dates, ffinal$danceability)
 plot(ffinal$dates, ffinal$key)
@@ -129,45 +137,11 @@ plot(ffinal$dates, ffinal$liveness)
 plot(ffinal$dates, ffinal$valence)
 plot(ffinal$dates, ffinal$tempo)
 
-
-#tyring new functions
-tops <- get_my_top_artists_or_tracks(type = "artists", limit= 20, offset = 0)
-
 #this has lots of info
 doctorstats <-get_playlist_audio_features("lexijewell", "4oS46HAvvek3W6FtOAjeRw", get_spotify_access_token(
   client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
   client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
 view(doctorstats)                 
-
-#i need to figure out how to redirct url
-install.packages("httr")
-library(httr)
-library(devtools) 
-library(tidyr) 
-library(knitr)
-library(tidyverse)
-
-oauth_callback("http://localhost:1410/")
-?oauth_callback()
-
-#genius lyrics
-install.packages("geniusr")
-genius_token("ctdXebuaMxOPt1AWWOA2QLpymD7weaNWQBvPu9j1pLpyBSd7FgfuK-iCdkXzoKC-")
-token <- "ctdXebuaMxOPt1AWWOA2QLpymD7weaNWQBvPu9j1pLpyBSd7FgfuK-iCdkXzoKC-"
-
-library(geniusr)
-library(dplyr)
-library(tidytext)
-install.packages("genius")
-library(genius)
-#these work
-genius_album(artist = "Atta Boy", album = "Out of Sorts", info = "simple")
-#this is how i find song_id
-oor <- search_song("Out of Sorts",10, "ctdXebuaMxOPt1AWWOA2QLpymD7weaNWQBvPu9j1pLpyBSd7FgfuK-iCdkXzoKC-")
-view(oor)
-get_lyrics_id("3825527", "token")
-view(ooslyrics)
-get_lyrics_search(artist_name = "Atta Boy", song_title = "Out of Sorts")
 
 ###plots from doctorstats###
 install.packages("ggplot2")
