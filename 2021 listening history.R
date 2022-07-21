@@ -67,6 +67,11 @@ get_track_audio_features("6UryEVkqPDLliZOG4UmFi9", get_spotify_access_token(
   client_id = "insert your client id",
   client_secret = "insert your client secret"))
 
+
+### you can skip to line 146 for playlist features
+### I didn't realize this funtion existed so i took my own path to the same thing
+
+
 #this removes the spotify:track: text in front of ID so R can read it 
 doctor$track.trackUri<-gsub("spotify:track:","",as.character(doctor$track.trackUri))
 view(doctor)
@@ -139,7 +144,7 @@ plot(ffinal$dates, ffinal$valence)
 plot(ffinal$dates, ffinal$tempo)
 
 #this has lots of info
-doctorstats <-get_playlist_audio_features("lexijewell", "4oS46HAvvek3W6FtOAjeRw", get_spotify_access_token(
+doctorstats <-get_playlist_audio_features("insert your spotify username", "4oS46HAvvek3W6FtOAjeRw", get_spotify_access_token(
   client_id = "insert your client id",
   client_secret = "insert your client secret"))
 view(doctorstats)                 
