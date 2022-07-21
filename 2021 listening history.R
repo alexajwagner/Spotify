@@ -1,3 +1,6 @@
+install.packages(spotifyr)
+install.packages(ggplot2)
+
 library(jsonlite)
 library(lubridate)
 library(gghighlight)
