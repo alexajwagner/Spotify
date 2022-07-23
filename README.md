@@ -7,4 +7,6 @@ and somewhat complicated plots
 
 
 2021 listening history analyzes data downloaded from spotify data request
-//Spotify analysis connects to Spotify account 
+
+
+Spotify analysis connects to Spotify account 
