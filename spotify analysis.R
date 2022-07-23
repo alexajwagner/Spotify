@@ -10,27 +10,27 @@ library(Rspotify)
 
 ###Authorization stuffs###
 spotifyOAuth("doctor",
-             "6b67b58626a54f3aaac7922ed3d55d5e",
-             "9b9e9e225ebd4abd8fc08dd8309f8731")
+             "insert your client id here",
+             "insert your client secret here")
 
-get_spotify_authorization_code(client_id = ("6b67b58626a54f3aaac7922ed3d55d5e"),
-                               client_secret = ("9b9e9e225ebd4abd8fc08dd8309f8731"),
+get_spotify_authorization_code(client_id = ("insert your client id here"),
+                               client_secret = ("insert your client secret here"),
                                scope = scopes())
 #finallyyyyyy
 get_my_currently_playing(
   authorization = 
-    get_spotify_authorization_code(client_id = ("6b67b58626a54f3aaac7922ed3d55d5e"),
-                                   client_secret = ("9b9e9e225ebd4abd8fc08dd8309f8731"),
+    get_spotify_authorization_code(client_id = ("insert your client id here"),
+                                   client_secret = ("insert your client secret here"),
                                    scope = ("user-modify-playback-state")))
 
 
-autho <- get_spotify_authorization_code(client_id = ("6b67b58626a54f3aaac7922ed3d55d5e"),
-                                        client_secret = ("9b9e9e225ebd4abd8fc08dd8309f8731"),
+autho <- get_spotify_authorization_code(client_id = ("insert your client id here"),
+                                        client_secret = ("insert your client secret here"),
                                         scope = ("user-modify-playback-state"))
 #cool this worked
 get_my_currently_playing(authorization = autho)
 
-myplaylists <- get_user_playlists("lexijewell", limit = 20, offset = 0, autho)
+myplaylists <- get_user_playlists("your spotify username", limit = 20, offset = 0, autho)
 view(mylists)
 
 mediumtops <- get_my_top_artists_or_tracks(type = "tracks", 
@@ -53,16 +53,20 @@ shorttops <- get_my_top_artists_or_tracks(type = "tracks",
 view(shorttops)
 
 #creating short term playlist
-create_playlist("lexijewell", 
+create_playlist("your spotify username", 
                 "shortterm from R analysis", 
                 public = T, 
                 collaborative = FALSE,
-                description = "omg i did this in R// top songs from 4 weeks", 
+                description = "whatever you want", 
                 authorization =autho)
 
 #have to remove spotify:track: so r can read uri
 shorturis<-gsub("spotify:track:","",as.character(shorttops$uri))
 view(shorturis)
+
+#use this to find your new playlists id
+myplaylists <- get_user_playlists("your spotify username", limit = 40, offset = 0, autho)
+view(myplaylists)
 
 #adding shortterm tops songs to a playlists
 add_tracks_to_playlist("0vrtV0a5NWGt5hs1WoWeux",
@@ -72,11 +76,11 @@ add_tracks_to_playlist("0vrtV0a5NWGt5hs1WoWeux",
 mediumuris<-gsub("spotify:track:","",as.character(mediumtops$uri))
 view(mediumuris)
 
-create_playlist("lexijewell", 
+create_playlist("your spotify username", 
                 "medium_term from R analysis", 
                 public = T, 
                 collaborative = FALSE,
-                description = "omg i did this in R// top songs from 6 months", 
+                description = "whatever you want", 
                 authorization =autho)
 
 add_tracks_to_playlist("5mp7ucvWbuEnCv3bke5UXt",
@@ -87,11 +91,11 @@ add_tracks_to_playlist("5mp7ucvWbuEnCv3bke5UXt",
 longuris<-gsub("spotify:track:","",as.character(longtops$uri))
 view(longuris)
 
-create_playlist("lexijewell", 
+create_playlist("your spotify username", 
                 "long_term from R analysis", 
                 public = T, 
                 collaborative = FALSE,
-                description = "omg i did this in R// top songs from a few years", 
+                description = "whatever you want", 
                 authorization =autho)
 
 add_tracks_to_playlist("0Sk1QHQUUtjREzARcQPkXx",
@@ -102,8 +106,8 @@ add_tracks_to_playlist("0Sk1QHQUUtjREzARcQPkXx",
 #medium term key plot
 #track feats of medium range playlist 
 medfeats <- get_track_audio_features(mediumtops$id, get_spotify_access_token(
-  client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
-  client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
+  client_id = "insert your client id here",
+  client_secret = "insert your client secret here"))
 
 #track vs key for medium range
 medfeats$key <- as.factor(medfeats$key)
@@ -118,8 +122,8 @@ ggplot(medfeats, aes(x = key, fill = key))+
 #long term key plot
 #track feats of medium range playlist 
 longfeats <- get_track_audio_features(longtops$id, get_spotify_access_token(
-  client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
-  client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
+  client_id = "insert your client id here",
+  client_secret = "insert your client secret here"))
 
 #track vs key for medium range
 longfeats$key <- as.factor(longfeats$key)
@@ -135,8 +139,8 @@ ggplot(longfeats, aes(x = key, fill = key))+
 #track feats of medium range playlist 
 shortfeats <- get_track_audio_features(shorttops$id, 
                                        get_spotify_access_token(
-                                         client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
-                                         client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
+                                         client_id = "insert your client id here",
+                                         client_secret = "insert your client secret here"))
 
 #track vs key for medium range
 shortfeats$key <- as.factor(shortfeats$key)
@@ -153,32 +157,9 @@ new <- get_new_releases(country = NULL,
                         limit = 20,
                         offset = 0,
                         get_spotify_access_token(
-                          client_id = "6b67b58626a54f3aaac7922ed3d55d5e",
-                          client_secret = "9b9e9e225ebd4abd8fc08dd8309f8731"))
+                          client_id = "insert your client id here",
+                          client_secret = "insert your client secret here"))
 view(new)
-
-newuris<-gsub("spotify:album:","",as.character(new$uri))
-view(newuris)
-
-create_playlist("lexijewell", 
-                "new songs from code", 
-                public = T, 
-                collaborative = FALSE,
-                description = "blah blah blah words", 
-                authorization =autho)
-
-add_tracks_to_playlist("2qNU369NcdPvxZduAjsG0a",
-                       newuris,
-                       authorization = autho)
-myplaylists <- get_user_playlists("lexijewell", limit = 40, offset = 0, autho)
-view(myplaylists)
-
-get_album("new$id", 
-          market = NULL,
-          authorization = autho)
-
-
-
 
 #long term top artists
 longterm_top_artists <- get_my_top_artists_or_tracks(type = "artists", 
